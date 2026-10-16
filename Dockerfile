@@ -1,4 +1,4 @@
-FROM node:22-alpine AS runtime
+FROM node:25-alpine AS runtime
 
 WORKDIR /app
 ENV HOST=0.0.0.0
