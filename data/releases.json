@@ -1,0 +1,243 @@
+[
+  {
+    "id": "cirrus-231",
+    "name": "Cirrus",
+    "version": "2.3.1",
+    "environment": "staging",
+    "targetDate": "2026-09-01",
+    "owner": "Payments Platform",
+    "description": "Checkout retry handling and payment-provider failover release.",
+    "metrics": {
+      "passRate": 72.6,
+      "coverage": 78.0,
+      "flakyRate": 5.1,
+      "criticalDefects": 1,
+      "highDefects": 2,
+      "escapedDefects": 0
+    },
+    "execution": {
+      "total": 1000,
+      "passed": 726,
+      "failed": 251,
+      "skipped": 23,
+      "automated": 842
+    },
+    "defects": {
+      "open": 9,
+      "critical": 1,
+      "high": 2,
+      "medium": 4,
+      "low": 2
+    },
+    "requirements": [
+      {
+        "id": "REQ-PAY-104",
+        "title": "Retry an idempotent payment without duplicate capture",
+        "priority": "critical",
+        "coveredBy": [
+          "API-017",
+          "E2E-008"
+        ]
+      },
+      {
+        "id": "REQ-PAY-109",
+        "title": "Fail over after provider timeout",
+        "priority": "critical",
+        "coveredBy": [
+          "API-022",
+          "CHAOS-003"
+        ]
+      },
+      {
+        "id": "REQ-PAY-112",
+        "title": "Expose a traceable payment correlation ID",
+        "priority": "high",
+        "coveredBy": [
+          "API-026"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "type": "junit",
+        "label": "Regression execution",
+        "path": "reports/samples/junit.xml"
+      },
+      {
+        "type": "jira",
+        "label": "Open defect sample",
+        "path": "data/integrations/jira/issues.json"
+      },
+      {
+        "type": "postman",
+        "label": "Payment API checks",
+        "path": "api/postman/release-readiness.postman_collection.json"
+      }
+    ],
+    "notes": [
+      "One critical duplicate-capture defect remains open.",
+      "Provider-timeout scenario is unstable under parallel load."
+    ]
+  },
+  {
+    "id": "aurora-480",
+    "name": "Aurora",
+    "version": "4.8.0",
+    "environment": "staging",
+    "targetDate": "2026-09-04",
+    "owner": "Identity Experience",
+    "description": "Session refresh, device trust and account-recovery improvements.",
+    "metrics": {
+      "passRate": 99.0,
+      "coverage": 91.4,
+      "flakyRate": 3.0,
+      "criticalDefects": 0,
+      "highDefects": 0,
+      "escapedDefects": 0
+    },
+    "execution": {
+      "total": 1000,
+      "passed": 990,
+      "failed": 7,
+      "skipped": 3,
+      "automated": 914
+    },
+    "defects": {
+      "open": 3,
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 2
+    },
+    "requirements": [
+      {
+        "id": "REQ-ID-201",
+        "title": "Rotate refresh tokens after successful use",
+        "priority": "critical",
+        "coveredBy": [
+          "API-041",
+          "SEC-012"
+        ]
+      },
+      {
+        "id": "REQ-ID-207",
+        "title": "Recover an account with a verified secondary channel",
+        "priority": "high",
+        "coveredBy": [
+          "E2E-019",
+          "A11Y-006"
+        ]
+      },
+      {
+        "id": "REQ-ID-214",
+        "title": "Expire remembered devices after policy change",
+        "priority": "high",
+        "coveredBy": [
+          "API-045"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "type": "playwright",
+        "label": "Cross-browser smoke suite",
+        "path": "tests/e2e/release-workspace.spec.ts"
+      },
+      {
+        "type": "security",
+        "label": "Security baseline",
+        "path": "security/zap/automation.yaml"
+      },
+      {
+        "type": "lighthouse",
+        "label": "Accessibility and performance budget",
+        "path": "performance/lighthouse/lighthouserc.cjs"
+      }
+    ],
+    "notes": [
+      "All critical paths pass in Chromium and Firefox.",
+      "Remaining defects are low-risk copy and spacing issues."
+    ]
+  },
+  {
+    "id": "borealis-500rc2",
+    "name": "Borealis",
+    "version": "5.0.0-rc.2",
+    "environment": "test",
+    "targetDate": "2026-09-18",
+    "owner": "Orders Core",
+    "description": "Order split, partial fulfilment and warehouse-routing changes.",
+    "metrics": {
+      "passRate": 91.5,
+      "coverage": 78.3,
+      "flakyRate": 4.5,
+      "criticalDefects": 0,
+      "highDefects": 2,
+      "escapedDefects": 0
+    },
+    "execution": {
+      "total": 1000,
+      "passed": 915,
+      "failed": 70,
+      "skipped": 15,
+      "automated": 783
+    },
+    "defects": {
+      "open": 8,
+      "critical": 0,
+      "high": 2,
+      "medium": 3,
+      "low": 3
+    },
+    "requirements": [
+      {
+        "id": "REQ-ORD-301",
+        "title": "Split an order across eligible warehouses",
+        "priority": "critical",
+        "coveredBy": [
+          "API-061",
+          "SQL-014",
+          "E2E-031"
+        ]
+      },
+      {
+        "id": "REQ-ORD-306",
+        "title": "Recalculate tax after partial cancellation",
+        "priority": "high",
+        "coveredBy": [
+          "API-066",
+          "BDD-009"
+        ]
+      },
+      {
+        "id": "REQ-ORD-311",
+        "title": "Preserve audit history through fulfilment changes",
+        "priority": "high",
+        "coveredBy": [
+          "SQL-018"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "type": "sql",
+        "label": "Order data-quality checks",
+        "path": "database/tests/data-quality.sql"
+      },
+      {
+        "type": "cucumber",
+        "label": "Partial fulfilment scenarios",
+        "path": "tests/bdd/features/release-gate.feature"
+      },
+      {
+        "type": "k6",
+        "label": "Read-path load test",
+        "path": "performance/k6/load.js"
+      }
+    ],
+    "notes": [
+      "Release can continue only with approved waivers for two high defects.",
+      "Coverage on warehouse-routing rules is below the team threshold."
+    ]
+  }
+]

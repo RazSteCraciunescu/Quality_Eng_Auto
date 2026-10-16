@@ -1,0 +1,71 @@
+name: extended-browser-and-container-checks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 4 * * 2"
+
+permissions:
+  contents: read
+
+jobs:
+  cross-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium firefox
+      - run: npm run test:playwright
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cross-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+
+  cypress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npm run test:cypress
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-failure-evidence
+          path: |
+            cypress/screenshots/
+            cypress/videos/
+          if-no-files-found: ignore
+
+  container-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t release-readiness-lab:${{ github.sha }} .
+      - uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: release-readiness-lab:${{ github.sha }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif

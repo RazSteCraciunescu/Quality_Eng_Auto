@@ -1,0 +1,11 @@
+Test Case Key,Summary,Priority,Test Type,Precondition,Step,Test Data,Expected Result,Requirement,Labels
+QM-001,Create an idempotent payment,Critical,Automated,A valid customer and payment method exist,POST /payments with an idempotency key,amount=49.99; currency=EUR,201 response and one provider capture,REQ-PAY-104,api;payments
+QM-002,Retry a completed payment with the same key,Critical,Automated,QM-001 has completed,Repeat the request with the original key,same body and key,Original response is returned; no second capture,REQ-PAY-104,api;idempotency
+QM-003,Fail over after primary provider timeout,Critical,Automated,Primary provider timeout is injected,Submit an eligible payment,timeout=4s,Secondary provider succeeds and audit contains both attempts,REQ-PAY-109,resilience;payments
+QM-004,Expose payment correlation ID,High,Automated,API is available,Create a payment and inspect headers and body,standard payment,Stable correlation ID appears in response and logs,REQ-PAY-112,observability;api
+QM-005,Rotate refresh token,Critical,Automated,An active session exists,Exchange the refresh token,valid token,New token is issued and old token is invalid,REQ-ID-201,security;identity
+QM-006,Reject reused refresh token,Critical,Automated,QM-005 has completed,Reuse the previous refresh token,rotated token,401 response and security event,REQ-ID-201,security;negative
+QM-007,Recover account with secondary channel,High,Manual,Secondary channel is verified,Complete the recovery journey using keyboard only,verified email,Account is recovered and focus order remains logical,REQ-ID-207,e2e;accessibility
+QM-008,Split order across warehouses,Critical,Automated,No warehouse holds the full quantity,Create an order for the available combined quantity,SKU-204 x 12,Order is split across two eligible warehouses,REQ-ORD-301,orders;api
+QM-009,Recalculate tax after partial cancellation,High,Automated,A multi-line taxed order exists,Cancel one line after allocation,cancel line 2,Tax and total are recalculated consistently,REQ-ORD-306,orders;calculation
+QM-010,Preserve fulfilment audit history,High,Automated,An order has changed warehouse,Query the order event history,order with reroute,Both routing decisions and timestamps are present,REQ-ORD-311,sql;audit

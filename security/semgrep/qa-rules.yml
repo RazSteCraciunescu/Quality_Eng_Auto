@@ -1,0 +1,22 @@
+rules:
+  - id: javascript-empty-catch
+    languages: [javascript, typescript]
+    message: Empty catch blocks hide product and test failures.
+    severity: WARNING
+    patterns:
+      - pattern: try { ... } catch ($ERR) { }
+  - id: hardcoded-local-bearer-token
+    languages: [javascript, typescript, python]
+    message: A bearer token appears to be hard-coded. Use a secret store or environment variable.
+    severity: ERROR
+    pattern-regex: '(?i)authorization.{0,20}bearer\\s+[a-z0-9._-]{20,}'
+  - id: pytest-broad-exception-pass
+    languages: [python]
+    message: Broad exception handling can turn a failed assertion into a false pass.
+    severity: WARNING
+    patterns:
+      - pattern: |
+          try:
+            ...
+          except Exception:
+            pass

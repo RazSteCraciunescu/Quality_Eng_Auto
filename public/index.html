@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Release Readiness Lab: a local quality engineering reference platform.">
+  <title>Release Readiness Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <p class="eyebrow header-eyebrow">Quality Engineering Reference Platform</p>
+        <h1>Release Readiness Lab</h1>
+      </div>
+      <nav aria-label="Primary navigation">
+        <a href="/api-docs.html">API documentation</a>
+        <a href="/api/health">Health</a>
+        <a href="/metrics">Metrics</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-shell">
+    <section class="intro-card panel" aria-labelledby="portfolio-title">
+      <div>
+        <p class="eyebrow">Current portfolio</p>
+        <h2 id="portfolio-title">Release evidence at a glance</h2>
+        <p>A small system under test with deterministic risk scoring, local enterprise-tool mocks, and enough edge cases to exercise a realistic automation stack.</p>
+      </div>
+      <button id="refresh-button" class="secondary-button" type="button">Refresh evidence</button>
+    </section>
+
+    <div class="workspace-grid">
+      <div class="primary-column">
+        <section class="summary-grid" aria-label="Release summary">
+          <article class="summary-card"><span>Total releases</span><strong id="summary-total">-</strong></article>
+          <article class="summary-card ready"><span>Ready</span><strong id="summary-ready">-</strong></article>
+          <article class="summary-card conditional"><span>Conditional</span><strong id="summary-conditional">-</strong></article>
+          <article class="summary-card blocked"><span>Blocked</span><strong id="summary-blocked">-</strong></article>
+        </section>
+
+        <section class="panel releases-panel" aria-labelledby="releases-title" data-testid="release-workspace">
+          <div class="releases-heading-row">
+            <div>
+              <p class="eyebrow">Risk-based release gate</p>
+              <h2 id="releases-title">Releases</h2>
+            </div>
+            <div class="toolbar">
+              <label>Search
+                <input id="search-input" type="search" placeholder="Name, version, environment" autocomplete="off">
+              </label>
+              <label>Sort
+                <select id="sort-select">
+                  <option value="targetDate">Target date</option>
+                  <option value="riskScore-desc">Risk: high to low</option>
+                  <option value="passRate-desc">Pass rate</option>
+                  <option value="name">Name</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="status-filters" role="group" aria-label="Filter releases by gate status">
+            <button class="filter-button active" type="button" data-status="all" aria-pressed="true">All</button>
+            <button class="filter-button" type="button" data-status="ready" aria-pressed="false">Ready</button>
+            <button class="filter-button" type="button" data-status="conditional" aria-pressed="false">Conditional</button>
+            <button class="filter-button" type="button" data-status="blocked" aria-pressed="false">Blocked</button>
+          </div>
+          <p id="release-count" class="release-count" aria-live="polite">Loading releases…</p>
+          <div id="release-list" class="release-list" aria-busy="true"></div>
+        </section>
+      </div>
+
+      <aside class="panel integrations-panel" aria-labelledby="integrations-title">
+        <p class="eyebrow">Offline enterprise samples</p>
+        <h2 id="integrations-title">Integration artifacts</h2>
+        <p>Local fixtures keep the project runnable without accounts, tokens or paid services.</p>
+        <div id="integration-list" class="integration-list" aria-busy="true"></div>
+      </aside>
+    </div>
+
+    <p class="disclaimer">Reference implementation. All products, releases, defects and integration records are fictional.</p>
+  </main>
+
+  <dialog id="release-dialog" class="release-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" class="dialog-frame">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Release evidence</p>
+          <h2 id="dialog-title">Release details</h2>
+        </div>
+        <button class="icon-button" value="close" aria-label="Close release details">×</button>
+      </div>
+      <div id="dialog-content"></div>
+    </form>
+  </dialog>
+
+  <div id="notification" class="notification" role="status" aria-live="polite"></div>
+</body>
+</html>

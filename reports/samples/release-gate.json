@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-08-29T18:10:00Z",
+  "build": "812",
+  "release": "Aurora 4.8.0",
+  "decision": "READY",
+  "risk_score": 5.4,
+  "evidence": {
+    "pass_rate": 99.0,
+    "automation_coverage": 86.0,
+    "critical_defects": 0,
+    "high_defects": 0,
+    "flaky_tests": 2,
+    "security_findings": 0,
+    "performance_regressions": 0,
+    "accessibility_violations": 3,
+    "build_status": "SUCCESS"
+  },
+  "accepted_risks": [],
+  "rollback_trigger": "API error rate above 2% for five minutes"
+}

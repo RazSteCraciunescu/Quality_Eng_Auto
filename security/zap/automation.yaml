@@ -1,0 +1,36 @@
+env:
+  contexts:
+    - name: Release Readiness Lab
+      urls:
+        - http://127.0.0.1:4173
+      includePaths:
+        - http://127.0.0.1:4173/.*
+      excludePaths:
+        - http://127.0.0.1:4173/metrics
+  parameters:
+    failOnError: true
+    failOnWarning: false
+
+jobs:
+  - type: openapi
+    parameters:
+      apiFile: api/openapi.yaml
+      targetUrl: http://127.0.0.1:4173
+  - type: spider
+    parameters:
+      context: Release Readiness Lab
+      maxDuration: 2
+      maxDepth: 5
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 3
+  - type: activeScan
+    parameters:
+      context: Release Readiness Lab
+      maxRuleDurationInMins: 1
+      maxScanDurationInMins: 5
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: reports/generated/zap
+      reportFile: zap-report.json

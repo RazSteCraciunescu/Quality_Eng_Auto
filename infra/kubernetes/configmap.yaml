@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-readiness-config
+  namespace: quality-lab
+data:
+  HOST: "0.0.0.0"
+  PORT: "4173"
+  LOG_LEVEL: "info"

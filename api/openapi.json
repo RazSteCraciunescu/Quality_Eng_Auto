@@ -1,0 +1,451 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Release Readiness API",
+    "version": "1.0.0",
+    "description": "Local reference API for release-gate and quality-evidence testing. All data is fictional."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:4173"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Service"
+    },
+    {
+      "name": "Releases"
+    },
+    {
+      "name": "Integrations"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Service health",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Service is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/releases": {
+      "get": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "List evaluated releases",
+        "operationId": "listReleases",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "ready",
+                "conditional",
+                "blocked"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "targetDate",
+                "riskScore",
+                "passRate",
+                "name"
+              ]
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Release list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Release"
+                      }
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status, sort, direction or search length",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/releases/{id}": {
+      "get": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Get release evidence",
+        "operationId": "getRelease",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ReleaseId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Release found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Release"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/releases/{id}/evaluate": {
+      "post": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Evaluate release metrics",
+        "operationId": "evaluateRelease",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ReleaseId"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metrics": {
+                    "$ref": "#/components/schemas/Metrics"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Gate result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "description": "Metrics failed validation"
+          }
+        }
+      }
+    },
+    "/api/integrations": {
+      "get": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "List offline integration artifacts",
+        "operationId": "listIntegrations",
+        "responses": {
+          "200": {
+            "description": "Integration artifact list"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Prometheus metrics",
+        "operationId": "getMetrics",
+        "responses": {
+          "200": {
+            "description": "Prometheus text format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/soap/release-readiness": {
+      "post": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Look up a release through a minimal XML interface",
+        "operationId": "soapReleaseReadiness",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "XML release readiness response",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "ReleaseId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "Release not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "required": [
+          "status",
+          "service",
+          "version",
+          "uptimeSeconds",
+          "timestamp"
+        ],
+        "properties": {
+          "status": {
+            "const": "ok"
+          },
+          "service": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "uptimeSeconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Metrics": {
+        "type": "object",
+        "required": [
+          "passRate",
+          "coverage",
+          "flakyRate",
+          "criticalDefects",
+          "highDefects",
+          "escapedDefects"
+        ],
+        "properties": {
+          "passRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "coverage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "flakyRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "criticalDefects": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "highDefects": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "escapedDefects": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "Release": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "version",
+          "environment",
+          "targetDate",
+          "metrics",
+          "riskScore",
+          "status",
+          "gateReasons"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string"
+          },
+          "targetDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          },
+          "riskScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "conditional",
+              "blocked"
+            ]
+          },
+          "gateReasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

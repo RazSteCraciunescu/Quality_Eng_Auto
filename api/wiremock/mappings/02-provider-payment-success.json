@@ -1,0 +1,23 @@
+{
+  "id": "be0049aa-26e8-470b-890d-da1142fd3dc2",
+  "name": "provider payment success",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/provider/payments"
+  },
+  "response": {
+    "status": 201,
+    "jsonBody": {
+      "providerPaymentId": "pay-{{randomValue type='UUID'}}",
+      "status": "captured",
+      "correlationId": "{{request.headers.X-Correlation-Id}}"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

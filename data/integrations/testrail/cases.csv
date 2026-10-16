@@ -1,0 +1,18 @@
+Section,Title,Type,Priority,Estimate,References,Preconditions,Steps,Expected Result
+Payments / Idempotency,Create a payment with a new idempotency key,Automated,Critical,2m,REQ-PAY-104,Customer and payment method exist,"1. Generate a key
+2. POST /payments
+3. Query provider captures",201 response; one payment; one capture
+Payments / Idempotency,Replay a completed payment request,Automated,Critical,2m,REQ-PAY-104,A payment completed successfully,1. Repeat the original request with the same key,Original response is returned; no duplicate capture
+Payments / Resilience,Fail over when the primary provider times out,Automated,Critical,5m,REQ-PAY-109,Primary-provider timeout can be injected,"1. Enable timeout
+2. Create payment
+3. Inspect audit trail",Secondary provider succeeds; both attempts are recorded
+Identity / Sessions,Rotate a refresh token after use,Automated,Critical,3m,REQ-ID-201,Active user session,"1. Refresh session
+2. Reuse old token",New token works; old token is rejected
+Identity / Recovery,Complete account recovery with keyboard navigation,Manual,High,8m,REQ-ID-207,Verified secondary email,"1. Start recovery
+2. Complete all fields using keyboard only",Recovery succeeds; focus is visible and ordered
+Orders / Routing,Split order across eligible warehouses,Automated,Critical,4m,REQ-ORD-301,Combined stock satisfies the order,"1. Create order
+2. Read allocations",Allocations use the fewest eligible warehouses
+Orders / Tax,Recalculate tax after a partial cancellation,Automated,High,4m,REQ-ORD-306,Allocated taxed order,"1. Cancel one line
+2. Read totals and tax events",Totals match remaining lines and tax rules
+Orders / Audit,Retain routing history after warehouse change,Automated,High,3m,REQ-ORD-311,Order has been rerouted,"1. Query order events
+2. Compare timestamps and actors",Original and replacement routes remain immutable

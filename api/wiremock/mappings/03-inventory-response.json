@@ -1,0 +1,26 @@
+{
+  "id": "42daf45d-98a3-4f8f-bc7f-d97b00f316e6",
+  "name": "inventory response",
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/inventory/[A-Z0-9-]+"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "warehouses": [
+        {
+          "id": "WH-01",
+          "available": 8
+        },
+        {
+          "id": "WH-02",
+          "available": 6
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

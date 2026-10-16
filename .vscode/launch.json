@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Release Readiness Lab",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/dist/server.js",
+      "cwd": "${workspaceFolder}",
+      "env": { "HOST": "127.0.0.1", "PORT": "4173" },
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

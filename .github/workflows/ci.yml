@@ -1,0 +1,88 @@
+name: continuous-integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: |
+          npm install --no-audit --no-fund
+          python -m pip install -r requirements-dev.txt
+      - name: Build and validate
+        run: |
+          npm run build
+          npm run validate
+          python -m compileall -q scripts tests/python
+      - name: Run Node, BDD and Python suites
+        run: |
+          npm run test:coverage
+          npm run test:cucumber
+          python -m pytest -m "not browser" --junitxml=reports/generated/pytest-junit.xml
+      - name: Run Postman contract checks
+        run: npm run test:postman
+      - name: Upload core evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-quality-evidence
+          path: reports/generated/
+          if-no-files-found: ignore
+
+  browser-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: core-quality
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Run Chromium, accessibility and visual checks
+        run: npx playwright test --project=chromium
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-quality-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+
+  container-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: core-quality
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build --tag release-readiness-lab:${{ github.sha }} .
+      - name: Exercise the running container
+        run: |
+          docker run --detach --name release-readiness-lab -p 14173:4173 release-readiness-lab:${{ github.sha }}
+          trap 'docker logs release-readiness-lab; docker rm --force release-readiness-lab' EXIT
+          for attempt in {1..30}; do
+            curl --fail --silent http://127.0.0.1:14173/api/health && break
+            sleep 1
+          done
+          python scripts/smoke_test.py --base-url http://127.0.0.1:14173

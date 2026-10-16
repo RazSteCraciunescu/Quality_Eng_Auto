@@ -1,0 +1,64 @@
+services:
+  app:
+    build: .
+    image: release-readiness-lab:local
+    ports:
+      - "4173:4173"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4173
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["integration"]
+    environment:
+      POSTGRES_DB: quality_lab
+      POSTGRES_USER: quality_lab
+      POSTGRES_PASSWORD: quality_lab_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quality_lab -d quality_lab"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  wiremock:
+    image: wiremock/wiremock:3.13.1
+    profiles: ["integration"]
+    command: ["--global-response-templating", "--verbose"]
+    ports:
+      - "8089:8080"
+    volumes:
+      - ./api/wiremock:/home/wiremock:ro
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: ["observability"]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/alerts.yml:/etc/prometheus/alerts.yml:ro
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    profiles: ["observability"]
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./observability/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana-dashboard.json:/var/lib/grafana/dashboards/release-readiness.json:ro

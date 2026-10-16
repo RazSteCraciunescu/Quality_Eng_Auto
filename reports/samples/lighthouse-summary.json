@@ -1,0 +1,11 @@
+{
+  "sample": true,
+  "url": "http://127.0.0.1:4173/",
+  "categories": {
+    "performance": 0.96,
+    "accessibility": 1.0,
+    "best-practices": 0.96,
+    "seo": 0.91
+  },
+  "note": "Illustrative local output. CI writes fresh reports under reports/generated."
+}

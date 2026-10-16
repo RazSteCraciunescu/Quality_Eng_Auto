@@ -1,0 +1,23 @@
+[
+  {
+    "uri": "tests/bdd/features/release_gate.feature",
+    "id": "risk-based-release-gate",
+    "keyword": "Feature",
+    "name": "Risk-based release gate",
+    "elements": [
+      {
+        "id": "risk-based-release-gate;a-release-with-a-critical-defect-is-blocked",
+        "keyword": "Scenario",
+        "name": "A release with a critical defect is blocked",
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Then ",
+            "name": "the release gate is BLOCKED",
+            "result": { "status": "passed", "duration": 184000000 }
+          }
+        ]
+      }
+    ]
+  }
+]

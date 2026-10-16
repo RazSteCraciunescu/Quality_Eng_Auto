@@ -1,0 +1,50 @@
+name: Defect report
+description: Record a reproducible product or automation defect.
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: State the observed problem and affected user or system.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and build
+      placeholder: Browser/OS, API version, build or commit, test data identifiers
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: "1.\n2.\n3."
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Suggested severity
+      options: [Critical, High, Medium, Low]
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and diagnostics
+      description: Logs, request IDs, screenshots, traces, SQL checks or packet-filter notes. Remove secrets and personal data.

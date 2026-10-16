@@ -1,0 +1,15 @@
+title = "Release Readiness Lab gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fictional local-only values"
+paths = [
+  "api/postman/local.postman_environment.json",
+  "compose.yaml"
+]
+regexes = [
+  "quality_lab_local",
+  "http://127\\\\.0\\\\.0\\\\.1"
+]

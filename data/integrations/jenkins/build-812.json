@@ -1,0 +1,58 @@
+{
+  "number": 812,
+  "url": "http://jenkins.example.invalid/job/release-readiness/812/",
+  "result": "SUCCESS",
+  "building": false,
+  "timestamp": "2026-08-29T17:14:02Z",
+  "durationMs": 184210,
+  "git": {
+    "branch": "main",
+    "commit": "9c72f8b1",
+    "message": "Harden release gate validation"
+  },
+  "parameters": {
+    "TARGET_ENV": "staging",
+    "RUN_EXTENDED": true
+  },
+  "stages": [
+    {
+      "name": "Validate",
+      "status": "SUCCESS",
+      "durationMs": 8120
+    },
+    {
+      "name": "Unit and API",
+      "status": "SUCCESS",
+      "durationMs": 21101
+    },
+    {
+      "name": "Contract",
+      "status": "SUCCESS",
+      "durationMs": 10422
+    },
+    {
+      "name": "Browser",
+      "status": "SUCCESS",
+      "durationMs": 118907
+    },
+    {
+      "name": "Publish evidence",
+      "status": "SUCCESS",
+      "durationMs": 25660
+    }
+  ],
+  "artifacts": [
+    {
+      "fileName": "junit.xml",
+      "relativePath": "reports/junit.xml"
+    },
+    {
+      "fileName": "playwright-report.zip",
+      "relativePath": "reports/playwright-report.zip"
+    },
+    {
+      "fileName": "release-gate.json",
+      "relativePath": "reports/release-gate.json"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Release Readiness Lab traffic
+http && tcp.port == 4173
+http.request.method == "GET"
+http.request.uri contains "/api/releases"
+http.response.code >= 400
+tcp.analysis.retransmission && tcp.port == 4173
+tcp.analysis.duplicate_ack && tcp.port == 4173
+
+# Correlation and synthetic capture
+http.header.value contains "lab-capture-001"
+ip.addr == 192.0.2.10 && ip.addr == 192.0.2.20
+tcp.stream eq 0

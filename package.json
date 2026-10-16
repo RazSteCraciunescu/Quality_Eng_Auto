@@ -1,0 +1,43 @@
+{
+  "name": "quality-engineering-reference-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A runnable release-readiness system and a practical senior QA engineering portfolio.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "dev": "npm run build && node --watch dist/server.js",
+    "validate": "node scripts/validate-project.mjs",
+    "test": "node --test tests/node/*.test.js",
+    "test:coverage": "node --experimental-test-coverage --test tests/node/*.test.js",
+    "test:python": "pytest -m \"not browser\"",
+    "test:selenium": "pytest -m browser tests/python/test_selenium_dashboard.py",
+    "test:playwright": "playwright test",
+    "test:cypress:run": "cypress run",
+    "test:cypress": "start-server-and-test start http://127.0.0.1:4173/api/health test:cypress:run",
+    "test:cucumber": "node -e \"require('node:fs').mkdirSync('reports/generated',{recursive:true})\" && cucumber-js",
+    "test:postman:run": "newman run api/postman/release-readiness.postman_collection.json -e api/postman/local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/generated/newman-junit.xml",
+    "test:postman": "start-server-and-test start http://127.0.0.1:4173/api/health test:postman:run",
+    "test:lighthouse": "lhci autorun --config=performance/lighthouse/lighthouserc.cjs",
+    "test:all-core": "npm run build && npm run validate && npm test && npm run test:cucumber && npm run test:python",
+    "qa": "npm run build && npm run validate && npm run test:coverage && npm run test:cucumber",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@cucumber/cucumber": "^11.3.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.10.0",
+    "cypress": "^14.0.0",
+    "newman": "^6.2.0",
+    "prettier": "^3.4.0",
+    "start-server-and-test": "^2.0.11",
+    "typescript": "^5.7.0"
+  }
+}

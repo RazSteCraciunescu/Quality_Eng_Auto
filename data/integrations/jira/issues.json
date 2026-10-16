@@ -1,0 +1,135 @@
+[
+  {
+    "key": "QLAB-101",
+    "issueType": "Bug",
+    "summary": "Duplicate capture can occur after provider timeout and retry",
+    "status": "Open",
+    "priority": "Critical",
+    "release": "Cirrus 2.3.1",
+    "labels": [
+      "payments",
+      "release-blocker",
+      "api"
+    ],
+    "environment": "staging",
+    "description": "A retry sent after a delayed provider response can create two capture attempts when the idempotency record has not propagated.",
+    "acceptanceCriteria": [
+      "Only one provider capture is created",
+      "The client receives the original correlation ID",
+      "A duplicate retry is observable in metrics"
+    ],
+    "links": [
+      {
+        "type": "is tested by",
+        "target": "API-017"
+      },
+      {
+        "type": "blocks",
+        "target": "REL-CIRRUS-231"
+      }
+    ]
+  },
+  {
+    "key": "QLAB-102",
+    "issueType": "Bug",
+    "summary": "Payment failover returns an unhelpful generic error",
+    "status": "In Progress",
+    "priority": "High",
+    "release": "Cirrus 2.3.1",
+    "labels": [
+      "payments",
+      "resilience"
+    ],
+    "environment": "staging",
+    "description": "The secondary provider succeeds but the API response still reports the primary-provider timeout.",
+    "acceptanceCriteria": [
+      "Return the successful payment result",
+      "Record both provider attempts in the audit log"
+    ],
+    "links": [
+      {
+        "type": "is tested by",
+        "target": "CHAOS-003"
+      }
+    ]
+  },
+  {
+    "key": "QLAB-103",
+    "issueType": "Bug",
+    "summary": "Warehouse route is not recalculated after inventory update",
+    "status": "Open",
+    "priority": "High",
+    "release": "Borealis 5.0.0-rc.2",
+    "labels": [
+      "orders",
+      "warehouse",
+      "data"
+    ],
+    "environment": "test",
+    "description": "An order retains the original warehouse after inventory is reduced below the requested quantity.",
+    "acceptanceCriteria": [
+      "Select the next eligible warehouse",
+      "Preserve the routing decision in order history"
+    ],
+    "links": [
+      {
+        "type": "is tested by",
+        "target": "API-061"
+      },
+      {
+        "type": "is tested by",
+        "target": "SQL-018"
+      }
+    ]
+  },
+  {
+    "key": "QLAB-104",
+    "issueType": "Story",
+    "summary": "Rotate refresh tokens after successful use",
+    "status": "Done",
+    "priority": "Critical",
+    "release": "Aurora 4.8.0",
+    "labels": [
+      "identity",
+      "security"
+    ],
+    "environment": "staging",
+    "description": "A successfully used refresh token is invalidated and replaced atomically.",
+    "acceptanceCriteria": [
+      "Old refresh token is rejected",
+      "New token preserves the expected session scope",
+      "Rotation is included in the security audit log"
+    ],
+    "links": [
+      {
+        "type": "is tested by",
+        "target": "SEC-012"
+      }
+    ]
+  },
+  {
+    "key": "QLAB-105",
+    "issueType": "Task",
+    "summary": "Review release-gate waiver for partial fulfilment",
+    "status": "In Review",
+    "priority": "Medium",
+    "release": "Borealis 5.0.0-rc.2",
+    "labels": [
+      "release-governance",
+      "orders"
+    ],
+    "environment": "test",
+    "description": "Document the impact, owner and expiry date for the two conditional high-severity defects.",
+    "acceptanceCriteria": [
+      "Named risk owner",
+      "Expiry date before general availability",
+      "Rollback trigger is measurable"
+    ],
+    "links": [
+      {
+        "type": "relates to",
+        "target": "QLAB-103"
+      }
+    ]
+  }
+]

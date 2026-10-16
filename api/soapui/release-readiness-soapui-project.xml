@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="e45f3df9-9038-4cad-b94a-07c03fd9fb64" activeEnvironment="Default" name="Release Readiness Lab" resourceRoot="" soapui-version="5.7.2" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="1f0f0d7a-b95e-451f-81b6-2487bdca9d9c" name="Release Readiness XML" type="rest" basePath="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints><con:endpoint>http://127.0.0.1:4173</con:endpoint></con:endpoints>
+    <con:resource name="Readiness" path="/soap/release-readiness" id="2b290597-0ea4-442b-87fa-62e711ffb2ce">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="Lookup release" id="35fb8466-2721-46d1-af8e-bae588177793" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:status>0</con:status><con:params/></con:representation>
+        <con:representation type="RESPONSE"><con:mediaType>application/xml</con:mediaType><con:status>200</con:status><con:params/></con:representation>
+        <con:request name="Aurora readiness" id="61a0310c-0bcc-4517-8b6d-33d95c84e191" mediaType="application/xml" postQueryString="false">
+          <con:settings/>
+          <con:endpoint>http://127.0.0.1:4173</con:endpoint>
+          <con:request>&lt;releaseReadinessRequest&gt;&lt;releaseId&gt;aurora-480&lt;/releaseId&gt;&lt;/releaseReadinessRequest&gt;</con:request>
+          <con:credentials><con:authType>No Authorization</con:authType></con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:oAuth1ProfileContainer/>
+  <con:sensitiveInformation/>
+</con:soapui-project>

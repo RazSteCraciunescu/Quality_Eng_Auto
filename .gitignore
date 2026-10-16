@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+
+# Runtime
+.env
+var/*.db
+var/*.db-*
+var/*.sqlite*
+logs/
+
+# Node and browser tooling
+node_modules/
+playwright-report/
+test-results/
+cypress/screenshots/
+cypress/videos/
+.lighthouseci/
+
+# IDE and OS
+.vscode/*.local.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated archives
+*.zip
+
+# Generated test evidence
+reports/generated/*
+!reports/generated/.gitkeep

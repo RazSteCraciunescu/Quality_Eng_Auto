@@ -1,0 +1,13 @@
+{
+  "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests/python"
+  ],
+  "yaml.schemas": {
+    "kubernetes": "infra/kubernetes/**/*.yaml"
+  }
+}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-readiness-lab
+  namespace: quality-lab
+spec:
+  selector:
+    app.kubernetes.io/name: release-readiness-lab
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

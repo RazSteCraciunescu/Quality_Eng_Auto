@@ -1,0 +1,42 @@
+[
+  {
+    "id": "jira",
+    "name": "Jira",
+    "recordCount": 5,
+    "status": "available",
+    "path": "data/integrations/jira/issues.json",
+    "description": "Fictional defects and delivery tasks used by traceability examples."
+  },
+  {
+    "id": "confluence",
+    "name": "Confluence",
+    "recordCount": 5,
+    "status": "available",
+    "path": "data/integrations/confluence/release-readiness-page.md",
+    "description": "Offline release notes, decisions and sign-off records."
+  },
+  {
+    "id": "qmetry",
+    "name": "QMetry",
+    "recordCount": 10,
+    "status": "available",
+    "path": "data/integrations/qmetry/test-cases.csv",
+    "description": "Import-shaped test cases and JUnit execution evidence."
+  },
+  {
+    "id": "testrail",
+    "name": "TestRail",
+    "recordCount": 8,
+    "status": "available",
+    "path": "data/integrations/testrail/cases.csv",
+    "description": "Portable CSV test-case sample with sections, priorities and steps."
+  },
+  {
+    "id": "jenkins",
+    "name": "Jenkins",
+    "recordCount": 1,
+    "status": "available",
+    "path": "data/integrations/jenkins/build-812.json",
+    "description": "A successful pipeline record with stages, duration and artifacts."
+  }
+]

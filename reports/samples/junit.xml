@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="quality-reference-sample" tests="3" failures="0" errors="0" skipped="0" time="0.184">
+  <testsuite name="release-gate" tests="3" failures="0" errors="0" skipped="0" time="0.184" timestamp="2026-08-29T18:10:00+00:00">
+    <testcase classname="release_gate" name="aurora_is_ready" time="0.061"/>
+    <testcase classname="release_gate" name="borealis_is_conditional" time="0.058"/>
+    <testcase classname="release_gate" name="cirrus_is_blocked" time="0.065"/>
+  </testsuite>
+</testsuites>

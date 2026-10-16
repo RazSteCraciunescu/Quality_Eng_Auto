@@ -1,0 +1,24 @@
+groups:
+  - name: release-readiness
+    rules:
+      - alert: ReleaseReadinessUnavailable
+        expr: up{job="release-readiness"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Release Readiness Lab is not scrapeable
+      - alert: BlockedReleasePresent
+        expr: release_readiness_releases{status="blocked"} > 0
+        for: 5m
+        labels:
+          severity: information
+        annotations:
+          summary: At least one release is blocked
+      - alert: AverageReleaseRiskHigh
+        expr: release_readiness_release_average_risk >= 70
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Average release risk is above the blocked threshold

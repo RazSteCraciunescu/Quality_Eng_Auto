@@ -1,0 +1,62 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build TypeScript",
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "label": "Start Release Readiness Lab",
+      "type": "npm",
+      "script": "start",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "node",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Release Readiness Lab listening on.*"
+        }
+      }
+    },
+    {
+      "label": "Run core Node tests",
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Python checks",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "-m",
+        "pytest",
+        "-m",
+        "not browser"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Playwright",
+      "type": "npm",
+      "script": "test:playwright",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

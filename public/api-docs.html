@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API documentation · Release Readiness Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .docs { width: min(960px, calc(100% - 2rem)); margin: 2rem auto; }
+    .docs table { width: 100%; border-collapse: collapse; background: white; }
+    .docs th, .docs td { padding: .8rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .docs code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .method { font-weight: 850; }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><div><p class="eyebrow header-eyebrow">OpenAPI 3.1</p><h1>API documentation</h1></div><nav><a href="/">Dashboard</a><a href="/openapi.yaml">YAML</a><a href="/openapi.json">JSON</a></nav></div></header>
+  <main class="docs">
+    <section class="panel" style="padding:1.4rem">
+      <h2>Release Readiness API</h2>
+      <p>The API is intentionally small, deterministic and safe to run locally. Use the linked OpenAPI specification with Swagger Editor, Postman, SoapUI, Schemathesis or any other compatible client.</p>
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="method">GET</td><td><code>/api/health</code></td><td>Liveness and service metadata.</td></tr>
+          <tr><td class="method">GET</td><td><code>/api/releases</code></td><td>List, filter, search and sort evaluated releases.</td></tr>
+          <tr><td class="method">GET</td><td><code>/api/releases/{id}</code></td><td>Retrieve release details and evidence.</td></tr>
+          <tr><td class="method">POST</td><td><code>/api/releases/{id}/evaluate</code></td><td>Evaluate supplied metrics against the release gate.</td></tr>
+          <tr><td class="method">GET</td><td><code>/api/integrations</code></td><td>List the offline enterprise-tool samples.</td></tr>
+          <tr><td class="method">POST</td><td><code>/soap/release-readiness</code></td><td>Minimal XML endpoint for the bundled SoapUI project.</td></tr>
+          <tr><td class="method">GET</td><td><code>/metrics</code></td><td>Prometheus text exposition.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

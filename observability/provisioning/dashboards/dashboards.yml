@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: Release Readiness
+    folder: Quality Engineering
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards
