@@ -37,7 +37,7 @@
     "cypress": "^14.0.0",
     "newman": "^6.2.0",
     "prettier": "^3.4.0",
-    "start-server-and-test": "^2.0.11",
+    "start-server-and-test": "^3.0.13",
     "typescript": "^5.7.0"
   }
 }
